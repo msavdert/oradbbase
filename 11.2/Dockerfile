@@ -188,6 +188,9 @@ RUN echo -e "<busconfig><selinux></selinux></busconfig>" >> /etc/selinux/targete
 # Hide/disable the ttyS0 serial console service
 RUN ["systemctl", "mask", "serial-getty@ttyS0.service"]
 
+# Set timezone Europe/Istanbul
+RUN timedatectl set-timezone ${TZ}
+
 RUN systemctl disable firewalld
 RUN systemctl enable sshd
 RUN systemctl enable ntpd
