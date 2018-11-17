@@ -197,10 +197,10 @@ RUN chmod -R g+w /u01/software/
 # Hide/disable the ttyS0 serial console service
 RUN ["systemctl", "mask", "serial-getty@ttyS0.service"]
 
-# NFS
-RUN mkdir -p /asmdisks && chown grid:oinstall /asmdisks
-RUN echo "nfs:/asmdisks   /asmdisks  nfs  rw,bg,hard,nointr,tcp,vers=3,timeo=600,rsize=32768,wsize=32768,actimeo=0  0 0" >> /etc/fstab
+# Set timezone Europe/Istanbul
+RUN timedatectl set-timezone ${TZ}
 
+RUN systemctl disable firewalld
 RUN systemctl enable sshd
 RUN systemctl enable ntpd
 RUN rm -rf /run/nologin
