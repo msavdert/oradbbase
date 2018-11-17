@@ -1,6 +1,11 @@
 FROM melihsavdert/oel7-systemd
 MAINTAINER Melih Savdert
 
+# Passwords for grid and oracle users
+ENV ["GRID_PASSWORD", "oracle"]
+ENV ["ORACLE_PASSWORD", "oracle"]
+ENV ["ROOT_PASSWORD", "oracle"]
+
 ENV ORA_MOUNT_PATH /u01
 ENV ORA_ORACLE_BASE /u01/app/oracle
 ENV ORA_ORACLE_HOME /u01/app/oracle/product/18.3.0.0/dbhome_1
@@ -51,10 +56,10 @@ RUN groupadd -g 54330 racdba
 RUN useradd -u 54321 -g oinstall -G dba,asmdba,backupdba,dgdba,kmdba,racdba,oper oracle
 RUN useradd -u 54322 -g oinstall -G asmadmin,asmdba,racdba,asmoper,dba grid
 
-# Give grid and oracle users passwords
-RUN echo "grid:oracle" | chpasswd
-RUN echo "oracle:oracle" | chpasswd
-RUN echo "root:oracle" | chpasswd
+# Give root, grid and oracle users passwords
+RUN echo "grid:${GRID_PASSWORD}" | chpasswd
+RUN echo "oracle:${ORACLE_PASSWORD}" | chpasswd
+RUN echo "oracle:${ROOT_PASSWORD}" | chpasswd
 
 # Disable SELinux
 RUN sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
@@ -203,4 +208,3 @@ RUN rm -rf /run/nologin
 EXPOSE 1521 1158 5500 7803 7102 9803
 
 CMD ["/usr/sbin/init"]
-
