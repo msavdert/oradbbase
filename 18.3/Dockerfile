@@ -205,6 +205,6 @@ RUN systemctl enable sshd
 RUN systemctl enable ntpd
 RUN rm -rf /run/nologin
 
-EXPOSE 1521 1158 5500 7803 7102 9803
+EXPOSE 1521 1158 5500 7803 7102
 
 CMD ["/usr/sbin/init"]
