@@ -22,7 +22,8 @@ RUN ["yum", "-y", "install", \
        "vim", \
        "net-tools", \
        "wget", \
-       "tar"]
+       "tar", \
+       "ntp"]
 
 RUN yum install -y binutils compat-libstdc++-33 compat-libstdc++-33.i686 gcc gcc-c++ glibc glibc.i686 glibc-devel glibc-devel.i686 ksh libgcc libgcc.i686 libstdc++ libstdc++.i686 libstdc++-devel libstdc++-devel.i686 libaio libaio.i686 libaio-devel libaio-devel.i686 libXext libXext.i686 libXtst libXtst.i686 libX11 libX11.i686 libXau libXau.i686 libxcb libxcb.i686 libXi libXi.i686 make sysstat unixODBC unixODBC-devel zlib-devel zlib-devel.i686
 
@@ -30,26 +31,26 @@ RUN yum install -y binutils compat-libstdc++-33 compat-libstdc++-33.i686 gcc gcc
 RUN ["yum", "clean", "all"]
 
 ##  Users and Groups
-# Add groups for grid infrastructure
-RUN ["groupadd", "--force", "--gid", "54321", "oinstall"]
-RUN ["groupmod", "--gid", "54321", "oinstall"]
-RUN ["groupadd", "--gid", "54421", "asmdba"]
-RUN ["groupadd", "--gid", "54422", "asmadmin"]
-RUN ["groupadd", "--gid", "54423", "asmoper"]
-
-# Add groups for database
-RUN ["groupadd", "--force", "--gid", "54322", "dba"]
-RUN ["groupmod", "--gid", "54322", "dba"]
-
-# Add grid infrastructure owner
-RUN useradd --create-home --uid 54421 --gid oinstall --groups dba,asmdba,asmadmin,asmoper grid || \
-    (RES=$? && ( [ $RES -eq 9 ] && exit 0 || exit $RES))
-RUN ["usermod", "--uid", "54421", "--gid", "oinstall", "--groups", "dba,asmdba,asmadmin,asmoper", "grid"]
-
-# Add database owner
-RUN useradd --create-home --uid 54321 --gid oinstall --groups dba,asmdba,oper,backupdba,dgdba,kmdba,racdba oracle || \
-    (RES=$? && ( [ $RES -eq 9 ] && exit 0 || exit $RES))
-RUN ["usermod", "--uid", "54321", "--gid", "oinstall", "--groups", "dba,asmdba,oper,backupdba,dgdba,kmdba,racdba", "oracle"]
+RUN userdel -r oracle
+RUN groupdel oinstall
+RUN groupdel dba
+RUN groupdel oper
+RUN groupdel backupdba
+RUN groupdel dgdba
+RUN groupdel kmdba
+RUN groupdel racdba
+RUN groupadd -g 54421 oinstall
+RUN groupadd -g 54329 asmadmin
+RUN groupadd -g 54327 asmdba
+RUN groupadd -g 54328 asmoper
+RUN groupadd -g 54322 dba
+RUN groupadd -g 54323 oper
+RUN groupadd -g 54324 backupdba
+RUN groupadd -g 54325 dgdba
+RUN groupadd -g 54326 kmdba
+RUN groupadd -g 54330 racdba
+RUN useradd -u 54321 -g oinstall -G dba,asmdba,backupdba,dgdba,kmdba,racdba,oper oracle
+RUN useradd -u 54322 -g oinstall -G asmadmin,asmdba,racdba,asmoper,dba grid--groups", "dba,asmdba,oper,backupdba,dgdba,kmdba,racdba", "oracle"]
 
 # Give grid and oracle users passwords
 RUN echo "grid:oracle" | chpasswd
