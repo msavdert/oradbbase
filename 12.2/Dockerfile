@@ -1,6 +1,11 @@
 FROM melihsavdert/oel7-systemd
 MAINTAINER Melih Savdert
 
+# Passwords for grid and oracle users
+ENV ["GRID_PASSWORD", "oracle"]
+ENV ["ORACLE_PASSWORD", "oracle"]
+ENV ["ROOT_PASSWORD", "oracle"]
+
 ENV ORA_MOUNT_PATH /u01
 ENV ORA_ORACLE_BASE /u01/app/oracle
 ENV ORA_ORACLE_HOME /u01/app/oracle/product/12.2.0.1/dbhome_1
@@ -22,7 +27,6 @@ RUN ["yum", "-y", "install", \
        "vim", \
        "net-tools", \
        "wget", \
-       "tar", \
        "ntp"]
 
 RUN yum install -y binutils compat-libstdc++-33 compat-libstdc++-33.i686 gcc gcc-c++ glibc glibc.i686 glibc-devel glibc-devel.i686 ksh libgcc libgcc.i686 libstdc++ libstdc++.i686 libstdc++-devel libstdc++-devel.i686 libaio libaio.i686 libaio-devel libaio-devel.i686 libXext libXext.i686 libXtst libXtst.i686 libX11 libX11.i686 libXau libXau.i686 libxcb libxcb.i686 libXi libXi.i686 make sysstat unixODBC unixODBC-devel zlib-devel zlib-devel.i686
@@ -50,12 +54,12 @@ RUN groupadd -g 54325 dgdba
 RUN groupadd -g 54326 kmdba
 RUN groupadd -g 54330 racdba
 RUN useradd -u 54321 -g oinstall -G dba,asmdba,backupdba,dgdba,kmdba,racdba,oper oracle
-RUN useradd -u 54322 -g oinstall -G asmadmin,asmdba,racdba,asmoper,dba grid--groups", "dba,asmdba,oper,backupdba,dgdba,kmdba,racdba", "oracle"]
+RUN useradd -u 54322 -g oinstall -G asmadmin,asmdba,racdba,asmoper,dba grid
 
-# Give grid and oracle users passwords
-RUN echo "grid:oracle" | chpasswd
-RUN echo "oracle:oracle" | chpasswd
-RUN echo "root:oracle" | chpasswd
+# Give root, grid and oracle users passwords
+RUN echo "grid:${GRID_PASSWORD}" | chpasswd
+RUN echo "oracle:${ORACLE_PASSWORD}" | chpasswd
+RUN echo "oracle:${ROOT_PASSWORD}" | chpasswd
 
 # Disable SELinux
 RUN sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
@@ -207,5 +211,3 @@ RUN systemctl enable ntpd
 RUN rm -rf /run/nologin
 
 EXPOSE 1521 1158 5500 7803 7102 9803
-
-CMD ["/usr/sbin/init"]
