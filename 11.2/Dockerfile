@@ -37,11 +37,6 @@ RUN ["yum", "clean", "all"]
 RUN userdel -r oracle
 RUN groupdel oinstall
 RUN groupdel dba
-RUN groupdel oper
-RUN groupdel backupdba
-RUN groupdel dgdba
-RUN groupdel kmdba
-RUN groupdel racdba
 RUN groupadd -g 54421 oinstall
 RUN groupadd -g 54329 asmadmin
 RUN groupadd -g 54327 asmdba
@@ -79,10 +74,7 @@ RUN echo -e "if [ \$USER = \"oracle\" ] || [ \$USER = \"grid\" ]; then\n\
     umask 022\n\
 fi" >> /etc/profile
 
-###################################################################################
 ##  SSH Shared Keys
-###################################################################################
-
 # Create SSH shared key directory for the oracle user
 RUN ["mkdir", "-p", "-m", "0700", "/home/oracle/.ssh/"]
 
@@ -196,6 +188,7 @@ RUN echo -e "<busconfig><selinux></selinux></busconfig>" >> /etc/selinux/targete
 # Hide/disable the ttyS0 serial console service
 RUN ["systemctl", "mask", "serial-getty@ttyS0.service"]
 
+RUN systemctl disable firewalld
 RUN systemctl enable sshd
 RUN systemctl enable ntpd
 RUN rm -rf /run/nologin
