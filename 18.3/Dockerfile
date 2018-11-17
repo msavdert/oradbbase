@@ -198,7 +198,7 @@ RUN chmod -R g+w /u01/software/
 RUN ["systemctl", "mask", "serial-getty@ttyS0.service"]
 
 # Set timezone Europe/Istanbul
-RUN timedatectl set-timezone ${TZ}
+RUN timedatectl set-timezone Europe/Istanbul
 
 RUN systemctl disable firewalld
 RUN systemctl enable sshd
