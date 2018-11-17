@@ -189,7 +189,7 @@ RUN echo -e "<busconfig><selinux></selinux></busconfig>" >> /etc/selinux/targete
 RUN ["systemctl", "mask", "serial-getty@ttyS0.service"]
 
 # Set timezone Europe/Istanbul
-RUN timedatectl set-timezone Europe/Istanbul
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN systemctl disable firewalld
 RUN systemctl enable sshd
