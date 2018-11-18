@@ -160,9 +160,12 @@ alias envo='env | grep ORACLE'\n\
 alias sqla='sqlplus / as sysdba'\n\
 alias psf='ps -fe | grep pmon'\n\
 alias taila='tail -200f \$ORACLE_BASE/diag/rdbms/\${oracle_sid}/\${ORACLE_SID}/trace/alert_\${ORACLE_SID}.log'\n\
+alias crsalert='tail -200f \$GRID_BASE/diag/crs/`hostname -s`/crs/trace/alert.log'\n\
+alias asmalert='tail -200f $GRID_BASE/diag/asm/+asm/+ASM/trace/alert_+ASM.log'\n\
 " >> /home/oracle/.bash_profile
 RUN echo -e "### for oracle install ####\n\
 export ORACLE_BASE=${GRID_ORACLE_BASE}\n\
+export GRID_BASE=\$ORACLE_BASE\n\
 export ORACLE_HOME=${GRID_ORACLE_HOME}\n\
 export ORACLE_HOSTNAME=\`hostname\`\n\
 " >> /home/grid/.bash_profile
@@ -179,6 +182,9 @@ alias envo='env | grep ORACLE'\n\
 alias sqla='sqlplus / as sysdba'\n\
 alias psf='ps -fe | grep pmon'\n\
 alias taila='tail -200f \$ORACLE_BASE/diag/rdbms/\${oracle_sid}/\${ORACLE_SID}/trace/alert_\${ORACLE_SID}.log'\n\
+alias taila='tail -200f \$ORACLE_BASE/diag/rdbms/\${ORACLE_UNQNAME,,}/\${ORACLE_SID}/trace/alert_\${ORACLE_SID}.log'\n\
+alias crsalert='tail -200f \$GRID_BASE/diag/crs/`hostname -s`/crs/trace/alert.log'\n\
+alias asmalert='tail -200f $GRID_BASE/diag/asm/+asm/+ASM/trace/alert_+ASM.log'\n\
 " >> /home/grid/.bash_profile
 
 ## create oraclehome
@@ -205,6 +211,6 @@ RUN systemctl enable sshd
 RUN systemctl enable ntpd
 RUN rm -rf /run/nologin
 
-EXPOSE 1521 1158 5500 7803 7102
+EXPOSE 1521 1158 5500 7803 7102 9803
 
 CMD ["/usr/sbin/init"]
