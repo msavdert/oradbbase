@@ -133,7 +133,7 @@ alias envo='env | grep ORACLE'\n\
 alias sqla='sqlplus / as sysdba'\n\
 alias psf='ps -fe | grep pmon'\n\
 alias taila='tail -200f \$ORACLE_BASE/diag/rdbms/\${ORACLE_UNQNAME,,}/\${ORACLE_SID}/trace/alert_\${ORACLE_SID}.log'\n\
-alias crsalert='tail -200f \$GRID_BASE/diag/crs/`hostname -s`/crs/trace/alert.log'\n\
+alias crsalert='tail -200f \$GRID_BASE/diag/crs/\`hostname -s\`/crs/trace/alert.log'\n\
 " >> /home/oracle/.bash_profile
 RUN echo -e "### for oracle install ####\n\
 export ORACLE_BASE=${GRID_ORACLE_BASE}\n\
@@ -152,11 +152,12 @@ alias envo='env | grep ORACLE'\n\
 alias sqla='sqlplus / as sysdba'\n\
 alias psf='ps -fe | grep pmon'\n\
 alias asmalert='tail -200f \$GRID_BASE/diag/asm/\${ORACLE_SID,,}/\${ORACLE_SID}/trace/alert_\${ORACLE_SID}.log'\n\
-alias crsalert='tail -200f \$GRID_BASE/diag/crs/`hostname -s`/crs/trace/alert.log'\n\
+alias crsalert='tail -200f \$GRID_BASE/diag/crs/\`hostname -s\`/crs/trace/alert.log'\n\
 " >> /home/grid/.bash_profile
 
 ## create oraclehome
 RUN  mkdir ${ORA_MOUNT_PATH} && \
+     mkdir -p ${ORA_ORACLE_HOME} && \
      mkdir -p ${GRID_ORACLE_BASE} && \
      mkdir -p ${GRID_ORACLE_HOME} && \
      chown -R grid:oinstall ${ORA_MOUNT_PATH} && \
