@@ -123,6 +123,7 @@ fi" >> /home/grid/.bashrc
 RUN echo -e "### for oracle install ####\n\
 export ORACLE_BASE=${ORA_ORACLE_BASE}\n\
 export GRID_BASE=${GRID_ORACLE_BASE}\n\
+export GRID_SID=+ASM\n\
 export ORACLE_HOME=${ORA_ORACLE_HOME}\n\
 export ORACLE_HOSTNAME=\`hostname\`\n\
 " >> /home/oracle/.bash_profile
@@ -136,9 +137,8 @@ alias tns='cd \$ORACLE_HOME/network/admin'\n\
 alias envo='env | grep ORACLE'\n\
 alias sqla='sqlplus / as sysdba'\n\
 alias psf='ps -fe | grep pmon'\n\
-alias taila='tail -200f $ORACLE_BASE/diag/rdbms/\`hostname\`/\${ORACLE_SID}/trace/alert_\${ORACLE_SID}.log'\n\
+alias taila='tail -200f \$ORACLE_BASE/diag/rdbms/\${ORACLE_UNQNAME,,}/\${ORACLE_SID}/trace/alert_\${ORACLE_SID}.log'\n\
 alias crsalert='tail -200f \$GRID_BASE/diag/crs/`hostname -s`/crs/trace/alert.log'\n\
-alias asmalert='tail -200f $GRID_BASE/diag/asm/+asm/+ASM/trace/alert_+ASM.log'\n\
 " >> /home/oracle/.bash_profile
 RUN echo -e "### for oracle install ####\n\
 export ORACLE_BASE=${GRID_ORACLE_BASE}\n\
@@ -156,9 +156,8 @@ alias tns='cd \$ORACLE_HOME/network/admin'\n\
 alias envo='env | grep ORACLE'\n\
 alias sqla='sqlplus / as sysdba'\n\
 alias psf='ps -fe | grep pmon'\n\
-alias taila='tail -200f /u01/app/oracle/diag/rdbms/\`hostname\`/\${ORACLE_SID}/trace/alert_\${ORACLE_SID}.log'\n\
+alias asmalert='tail -200f \$GRID_BASE/diag/asm/\${ORACLE_SID,,}/\${ORACLE_SID}/trace/alert_\${ORACLE_SID}.log'\n\
 alias crsalert='tail -200f \$GRID_BASE/diag/crs/`hostname -s`/crs/trace/alert.log'\n\
-alias asmalert='tail -200f $GRID_BASE/diag/asm/+asm/+ASM/trace/alert_+ASM.log'\n\
 " >> /home/grid/.bash_profile
 
 ## create oraclehome
