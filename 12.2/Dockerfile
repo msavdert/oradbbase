@@ -1,11 +1,6 @@
 FROM melihsavdert/oel7-systemd
 MAINTAINER Melih Savdert
 
-# Passwords for grid and oracle users
-ENV ["GRID_PASSWORD", "oracle"]
-ENV ["ORACLE_PASSWORD", "oracle"]
-ENV ["ROOT_PASSWORD", "oracle"]
-
 ENV ORA_MOUNT_PATH /u01
 ENV ORA_ORACLE_BASE /u01/app/oracle
 ENV ORA_ORACLE_HOME /u01/app/oracle/product/12.2.0.1/dbhome_1
@@ -57,9 +52,9 @@ RUN useradd -u 54321 -g oinstall -G dba,asmdba,backupdba,dgdba,kmdba,racdba,oper
 RUN useradd -u 54322 -g oinstall -G asmadmin,asmdba,racdba,asmoper,dba grid
 
 # Give root, grid and oracle users passwords
-RUN echo "grid:${GRID_PASSWORD}" | chpasswd
-RUN echo "oracle:${ORACLE_PASSWORD}" | chpasswd
-RUN echo "oracle:${ROOT_PASSWORD}" | chpasswd
+RUN echo "oracle:oracle" | chpasswd
+RUN echo "root:oracle" | chpasswd
+RUN echo "grid:oracle" | chpasswd
 
 # Disable SELinux
 RUN sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
