@@ -162,7 +162,7 @@ RUN  mkdir ${ORA_MOUNT_PATH} && \
      mkdir -p ${GRID_ORACLE_HOME} && \
      chown -R grid:oinstall ${ORA_MOUNT_PATH} && \
      mkdir -p ${ORA_ORACLE_BASE} && \
-     chown oracle:oinstall ${ORA_ORACLE_BASE} && \
+     chown -R oracle:oinstall ${ORA_ORACLE_BASE} && \
      chmod -R 775 ${ORA_MOUNT_PATH}
 
 RUN mkdir -p /u01/software
