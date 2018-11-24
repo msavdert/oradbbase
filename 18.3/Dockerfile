@@ -52,9 +52,9 @@ RUN useradd -u 54321 -g oinstall -G dba,asmdba,backupdba,dgdba,kmdba,racdba,oper
 RUN useradd -u 54322 -g oinstall -G asmadmin,asmdba,racdba,asmoper,dba grid
 
 # Give root, grid and oracle users passwords
-RUN echo "oracle:oracle" | chpasswd
-RUN echo "root:oracle" | chpasswd
-RUN echo "grid:oracle" | chpasswd
+RUN echo "oracle:Qazxsw123" | chpasswd
+RUN echo "root:Qazxsw123" | chpasswd
+RUN echo "grid:Qazxsw123" | chpasswd
 
 # Disable SELinux
 RUN sed -i 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/selinux/config
@@ -124,7 +124,7 @@ RUN ["chmod", "0640", "/home/grid/.ssh/authorized_keys"]
 RUN ssh-keygen -q -C '' -N '' -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key
 
 # Create the ssh_known_hosts file
-RUN for NODE in rac1 rac2; do (echo -n "$NODE " && cat /etc/ssh/ssh_host_ecdsa_key.pub) >> /etc/ssh/ssh_known_hosts; done
+RUN for NODE in ora1 ora2; do (echo -n "$NODE " && cat /etc/ssh/ssh_host_ecdsa_key.pub) >> /etc/ssh/ssh_known_hosts; done
 
 ## .bash_profile ###
 RUN echo -e "#this is for oracle install#\n\
