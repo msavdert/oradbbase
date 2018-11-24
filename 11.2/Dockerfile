@@ -3,9 +3,9 @@ MAINTAINER Melih Savdert
 
 ENV ORA_MOUNT_PATH /u01
 ENV ORA_ORACLE_BASE /u01/app/oracle
-ENV ORA_ORACLE_HOME /u01/app/oracle/product/11.2.0.1/dbhome_1
+ENV ORA_ORACLE_HOME /u01/app/oracle/product/11.2.0.4/dbhome_1
 ENV GRID_ORACLE_BASE /u01/app/grid
-ENV GRID_ORACLE_HOME /u01/app/11.2.0.1/grid
+ENV GRID_ORACLE_HOME /u01/app/11.2.0.4/grid
 ENV ORAINVENTORY /u01/app/oraInventory
 ENV TZ=Europe/Istanbul
 
@@ -45,9 +45,9 @@ RUN useradd -u 54321 -g oinstall -G dba,asmdba,backupdba,dgdba,kmdba,racdba,oper
 RUN useradd -u 54322 -g oinstall -G asmadmin,asmdba,racdba,asmoper,dba grid
 
 # Give root, grid and oracle users passwords
-RUN echo "oracle:oracle" | chpasswd
-RUN echo "root:oracle" | chpasswd
-RUN echo "grid:oracle" | chpasswd
+RUN echo "oracle:Qazxsw123" | chpasswd
+RUN echo "root:Qazxsw123" | chpasswd
+RUN echo "grid:Qazxsw123" | chpasswd
 
 # Add ulimits configuration file for grid user
 # oracle user ulimits configuration file already added by oracle-rdbms-server-11gR2-preinstall
@@ -103,7 +103,7 @@ RUN ["chmod", "0640", "/home/grid/.ssh/authorized_keys"]
 RUN ssh-keygen -q -C '' -N '' -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key
 
 # Create the ssh_known_hosts file
-#RUN for NODE in rac1 rac2; do (echo -n "$NODE " && cat /etc/ssh/ssh_host_ecdsa_key.pub) >> /etc/ssh/ssh_known_hosts; done
+#RUN for NODE in ora1 ora2; do (echo -n "$NODE " && cat /etc/ssh/ssh_host_ecdsa_key.pub) >> /etc/ssh/ssh_known_hosts; done
 
 ## .bash_profile ###
 RUN echo -e "#this is for oracle install#\n\
