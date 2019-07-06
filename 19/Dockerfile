@@ -20,6 +20,7 @@ RUN yum-config-manager \
 RUN ["yum", "-y", "install", \
        "oracle-database-preinstall-19c", \
        "vim", \
+       "screen", \
        "net-tools", \
        "wget", \
        "ntp"]
